@@ -7,7 +7,7 @@
 .phpunit.result.cache
 /.codex
 /.claude/
-/.cursor/
+# /.cursor/
 /.kiro/
 /.idea
 /.nova
