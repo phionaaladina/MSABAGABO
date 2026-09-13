@@ -1,0 +1,29 @@
+@extends('layouts.public')
+@section('title', 'Makindye Ssabagabo Municipal Council')
+@section('content')
+<div class="hero-wrap">
+    @if($slides->isNotEmpty())
+    <section class="hero-slider">
+        <div class="hero-slider__image"><img class="hero-slider__img" src="{{ $media($slides[0]->image) }}" alt="{{ $slides[0]->label ?? $slides[0]->title }}"><div class="hero-slider__overlay"></div></div>
+        <div class="hero-slider__panel"><div class="hero-slider__content"><h1>{{ $slides[0]->title }}</h1><p>{{ $slides[0]->description }}</p><div class="hero-slider__actions"><a href="{{ route('programs') }}" class="hero-slider__button">Explore Programs →</a><a href="{{ route('gallery') }}" class="hero-slider__secondary">See The Gallery</a></div></div></div>
+        @if($slides->count() > 1)<div class="hero-slider__dots">@foreach($slides as $index => $slide)<button class="hero-slider__dot {{ $index === 0 ? 'active' : '' }}" aria-label="Show slide {{ $index + 1 }}" data-slide="{{ $index }}"></button>@endforeach</div>@endif
+    </section>
+    @else
+    <section class="hero-slider"><div class="hero-slider__image"><img class="hero-slider__img" src="{{ asset('groundbreaking.jpeg') }}" alt="Municipal Council project"><div class="hero-slider__overlay"></div></div><div class="hero-slider__panel"><div class="hero-slider__content"><h1>Serving Makindye Ssabagabo</h1><p>Transparent, accessible and effective local government.</p><div class="hero-slider__actions"><a href="{{ route('programs') }}" class="hero-slider__button">Explore Programs →</a></div></div></div></section>
+    @endif
+    <div class="hero-stats">@foreach($stats as $stat)<div class="hero-stats__item"><span class="hero-stats__value">{{ number_format($stat->value) }}{{ $stat->suffix }}</span><span class="hero-stats__label">{{ $stat->label }}</span></div>@endforeach</div>
+</div>
+<section class="home-sections">
+    <div class="home-sections__about card-shell"><div class="home-sections__about-top"><div class="home-sections__about-image"><img src="{{ $media($homeSettings->about_teaser_image) ?? asset('GMA.jpg') }}" alt="Council leadership at a community project site"></div><div class="home-sections__about-body"><span class="section-tag">Who we are</span><h2>{{ $homeSettings->about_teaser_heading ?? 'Makindye Ssabagabo Municipal Council' }}</h2><p>{{ $homeSettings->about_teaser_text }}</p><a href="{{ $homeSettings->about_teaser_link_url ?? route('about') }}" class="home-sections__about-link">Read More →</a></div></div></div>
+    <div class="home-sections__quicklinks card-shell"><div class="section-header"><span class="section-tag">For residents</span><h2>Quick public services</h2></div><div class="home-sections__grid">@foreach($quickLinks as $link)<a href="{{ $link->href }}" target="_blank" rel="noreferrer" class="home-sections__card home-sections__card--image-top"><div class="home-sections__card-image"><img src="{{ $media($link->icon) }}" alt=""></div><div class="home-sections__card-body"><h3>{{ $link->title }}</h3></div></a>@endforeach</div></div>
+    <div class="home-sections__news card-shell"><div class="section-header"><span class="section-tag">Stay informed</span><h2>Official news and updates</h2></div><div class="home-sections__news-grid">@foreach($news as $item)<article class="news-card"><a href="{{ route('news.show', $item->slug) }}" class="news-card__link"><div class="news-card__img">@if($item->image)<img src="{{ $media($item->image) }}" alt="{{ $item->title }}">@endif</div><div class="news-card__body"><span class="news-item__date">{{ optional($item->published_date)->format('F j, Y') }}</span><span class="news-item__title">{{ $item->title }}</span><span class="news-item__read-more">Read more →</span></div></a></article>@endforeach</div><div style="text-align:center;margin-top:1.5rem"><a class="home-sections__viewall" href="{{ $homeSettings->view_all_news_url ?? route('news') }}">View All News</a></div></div>
+    <div class="home-sections__projects card-shell"><div class="section-header"><span class="section-tag">Building together</span><h2>Ongoing projects & activities</h2></div><div class="home-sections__project-grid">@foreach($projects as $project)<div class="project-card"><img src="{{ $media($project->image) }}" alt="{{ $project->caption }}"><p>{{ $project->caption }}</p></div>@endforeach</div></div>
+    <div class="home-sections__cta"><div class="home-sections__cta-text"><h2>{{ $homeSettings->cta_heading ?? 'Have a concern or an idea for your community?' }}</h2><p>{{ $homeSettings->cta_text ?? "Reach out to the Municipal Council — we're here to listen and respond." }}</p></div><a href="{{ route('contact') }}" class="home-sections__cta-button">Contact Us</a></div>
+    <div class="home-sections__partners card-shell"><div class="section-header"><span class="section-tag">Working with</span><h2>Development partners</h2></div><div class="home-sections__partner-grid">@foreach($partners as $partner)<a href="{{ $partner->href ?? '#' }}" target="_blank" rel="noreferrer" class="partner-card"><img src="{{ $media($partner->icon) }}" alt="{{ $partner->name }}"></a>@endforeach</div></div>
+</section>
+@endsection
+@push('scripts')
+<script>
+document.querySelectorAll('.hero-slider__dot').forEach((dot) => dot.addEventListener('click', () => { const slides = @json($slides->map(fn($slide) => ['image' => $media($slide->image), 'title' => $slide->title, 'description' => $slide->description])); const i = Number(dot.dataset.slide); const img = document.querySelector('.hero-slider__img'); const h = document.querySelector('.hero-slider__content h1'); const p = document.querySelector('.hero-slider__content p'); if (slides[i]) { img.src = slides[i].image; h.textContent = slides[i].title; p.textContent = slides[i].description || ''; } document.querySelectorAll('.hero-slider__dot').forEach((d) => d.classList.remove('active')); dot.classList.add('active'); }));
+</script>
+@endpush

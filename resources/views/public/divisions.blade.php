@@ -1,0 +1,8 @@
+@extends('layouts.public')
+@section('title', 'Divisions | Makindye Ssabagabo Municipal Council')
+@section('content')
+<div class="about-page"><section class="about-hero divisions-hero"><div class="about-hero__overlay"></div><div class="about-hero__content"><span class="about-hero__crumb">Home / Divisions</span><h1>Divisions</h1><p class="divisions-hero__tagline">Three divisions, one municipality — governance and services delivered close to home.</p></div></section><div class="about-container">
+<section class="about-block card-shell"><span class="section-tag">What divisions do</span><h2>Governance, Close To Home</h2><p>Every division drives the same five pillars of local government — tap any pillar to see what all of them cover.</p><div class="duty-chip-orbit">@foreach($dutyCategories as $category)<details class="duty-chip"><summary class="duty-chip__trigger"><span class="duty-chip__badge">☷</span><span class="duty-chip__label">{{ $category->name }}</span></summary><ul class="duty-chip__list">@foreach($category->duties as $duty)<li><strong>{{ $duty->title }}.</strong> {{ $duty->description }}</li>@endforeach</ul></details>@endforeach</div></section>
+<section class="divisions-grid">@foreach($divisions as $division)<a href="{{ route('divisions.show', $division->slug) }}" class="division-card"><div class="division-card__image"><img src="{{ $media($division->image) }}" alt="{{ $division->name }}"><span class="division-card__badge">⌂</span></div><div class="division-card__body"><h3>{{ $division->name }}</h3><p class="division-card__tagline">{{ $division->tagline }}</p><span class="division-card__link">Read more →</span></div></a>@endforeach</section>
+</div></div>
+@endsection
