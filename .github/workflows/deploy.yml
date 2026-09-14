@@ -92,7 +92,7 @@ jobs:
           local-dir: ./
           server-dir: ${{ secrets.FTP_SERVER_DIR }}
           log-level: standard
-          timeout: 120000
+          timeout: 180000
           dangerous-clean-slate: false
           exclude: |
             **/.git*
@@ -108,3 +108,4 @@ jobs:
             **/storage/framework/sessions/**
             **/storage/framework/views/**
             **/public/storage/**
+            **/composer.lock
