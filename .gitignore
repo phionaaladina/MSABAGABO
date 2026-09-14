@@ -6,9 +6,9 @@
 .phpactor.json
 .phpunit.result.cache
 /.codex
-/.claude
-# /.cursor/
-/.kiro
+/.claude/
+/.cursor/
+/.kiro/
 /.idea
 /.nova
 /.phpunit.cache
